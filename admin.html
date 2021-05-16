@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Yarışma</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -13,7 +12,6 @@
         $(document).ready(() => {
             fetch("https://api.apispreadsheets.com/data/12139/").then(res => {
                 if (res.status === 200) {
-                    // SUCCESS
                     res.json().then(data => {
                         list = data
                     }).then(() => setTimeout(
