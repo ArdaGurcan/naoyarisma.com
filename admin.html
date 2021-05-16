@@ -12,6 +12,7 @@
         $(document).ready(() => {
             fetch("https://api.apispreadsheets.com/data/12139/").then(res => {
                 if (res.status === 200) {
+                    // SUCCESS
                     res.json().then(data => {
                         list = data
                     }).then(() => setTimeout(
