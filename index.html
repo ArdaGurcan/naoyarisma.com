@@ -22,7 +22,7 @@
 						data: {
 							["ad_soyad"]: $("#q" + form).serializeArray()[0].value,
 							["cevap" + form]: ($("#q" + form).serializeArray()[1]) ? $("#q" + form).serializeArray()[
-								1].value : ""
+								1].value.toLowerCase() : ""
 						},
 						success: function () {
 							console.log("Form Data Submitted :)")
@@ -32,7 +32,7 @@
 							console.log({
 								["ad_soyad"]: $("#q" + form).serializeArray()[0].value,
 								["cevap" + form]: ($("#q" + form).serializeArray()[1]) ? $("#q" + form)
-									.serializeArray()[1].value : ""
+									.serializeArray()[1].value.toLowerCase() : ""
 							})
 						}
 					});
@@ -43,7 +43,7 @@
 					body: JSON.stringify({
 						"data": {
 							["cevap" + form]: $("#q" + form).serializeArray()[1] ? $("#q" + form)
-								.serializeArray()[1].value : ""
+								.serializeArray()[1].value.toLowerCase() : ""
 						},
 						"query": "select*from12139wheread_soyad='" + ad_soyad + "'"
 					}),
@@ -57,7 +57,7 @@
 				console.log({
 					"data": {
 						["cevap" + form]: $("#q" + form).serializeArray()[1] ? $("#q" + form).serializeArray()[1]
-							.value : ""
+							.value.toLowerCase() : ""
 						// ["aciklama" + form]: $("#q" + form).serializeArray()[1].value
 					},
 					"query": "select*from12139wheread_soyad='" + ad_soyad + "'"
@@ -195,7 +195,7 @@
 				<h2>Soru 1</h2>
 				<br>
 				<div class="form-group" style="text-align: center;">
-					<img src="https://www.ardagurcan.com/q1.png">
+					<img src="https://naoyarisma.com/q1.png">
 				</div>
 				<br>
 				<div class="form-group">
@@ -219,7 +219,7 @@
 				<h2>Soru 2</h2>
 				<br>
 				<div class="form-group" style="text-align: center;">
-					<img src="https://www.ardagurcan.com/q2.png">
+					<img src="https://naoyarisma.com/q2.png">
 				</div>
 				<br>
 				<div class="form-group">
@@ -241,7 +241,7 @@
 				<h2>Soru 3</h2>
 				<br>
 				<div class="form-group" style="text-align: center;">
-					<img src="https://www.ardagurcan.com/q3.png">
+					<img src="https://naoyarisma.com/q3.png">
 				</div>
 				<br>
 				<div class="form-group">
@@ -264,7 +264,7 @@
 				<h2>Soru 4</h2>
 				<br>
 				<div class="form-group" style="text-align: center;">
-					<img src="https://www.ardagurcan.com/q4.png">
+					<img src="https://naoyarisma.com/q4.png">
 				</div>
 				<br>
 				<div class="form-group">
@@ -284,7 +284,7 @@
 				<h2>Soru 5</h2>
 				<br>
 				<div class="form-group" style="text-align: center;">
-					<img src="https://www.ardagurcan.com/q5.png">
+					<img src="https://naoyarisma.com/q5.png">
 				</div>
 				<br>
 				<div class="form-group">
