@@ -67,9 +67,9 @@
 		}
 	</script>
 	<script>
-		startDate = new Date("Mon May 17 2021 18:00")
-		let t = 20
-		let a = 2
+		startDate = new Date("Mon May 17 2021 19:35")
+		let t = 60
+		let a = 5
 		setInterval(() => {
 			let now = new Date();
 			// console.log(startDate)
@@ -103,7 +103,7 @@
 						if (forms[i].getAttribute("style") == null || forms[i].getAttribute("style") == "") {
 							forms[i].setAttribute("style", "width:0px;height:0px;visibility:hidden")
 							if (diff < (forms.length) * t + (forms.length - 1) * a) {
-								$("#text").text((a / 60) + " dakika ara")
+								$("#text").text(((a % 60 == 0) ? ((a / 60) + " dakika ara") : (a + " saniye ara")))
 								$("#text")[0].setAttribute("style", "");
 							}
 
@@ -164,7 +164,7 @@
 			background-color: #ced4da;
 			border: 0px solid #ced4da;
 			border-radius: 5px;
-			height: 2% !important;
+			width: 50%;
 		}
 	</style>
 </head>
