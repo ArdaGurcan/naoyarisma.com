@@ -19,7 +19,7 @@
 				body: JSON.stringify({
 					"data": {
 						["ek_cevap" + form]: $("#q" + form).serializeArray()[1] ? $("#q" + form)
-							.serializeArray()[1].value.toLowerCase() : ""
+							.serializeArray()[1].value.toLowerCase().replace(" ","") : ""
 					},
 					"query": "select*from12139wheread_soyad='" + ad_soyad + "'"
 				}),
@@ -33,7 +33,7 @@
 			console.log({
 				"data": {
 					["ek_cevap" + form]: $("#q" + form).serializeArray()[1] ? $("#q" + form).serializeArray()[1]
-						.value.toLowerCase() : ""
+						.value.toLowerCase().replace(" ","") : ""
 					// ["aciklama" + form]: $("#q" + form).serializeArray()[1].value
 				},
 				"query": "select*from12139wheread_soyad='" + ad_soyad + "'"
@@ -43,7 +43,7 @@
 		
 	</script>
 	<script>
-		startDate = new Date("Mon May 17 2021 19:54")
+		startDate = new Date("Tue May 18 2021 17:23")
 		let t = 60
 		let a = 5
 		setInterval(() => {
