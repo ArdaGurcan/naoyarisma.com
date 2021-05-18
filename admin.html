@@ -10,6 +10,7 @@
         console.log("Coded by Arda Gürcan under CC BY 4.0")
         let list = null
         let answers = null
+        
         $(document).ready(() => {
             fetch("https://api.apispreadsheets.com/data/12139/").then(res => {
                 if (res.status === 200) {
@@ -67,6 +68,7 @@
         table {
             border: 2px solid #dee2e6;
         }
+
     </style>
 </head>
 
