@@ -25,7 +25,15 @@
                                     1) {
                                     if (Object.entries(answers[i][1])[j][1] == Object.entries(
                                             answers[0][1])[j][1]) {
-                                        score += 10
+                                        if(j > 10)
+                                        {
+                                            score+=1
+                                        }
+                                        else
+                                        {
+                                            score += 10
+                                        }
+                                        
                                     }
                                     console.log(Object.entries(answers[i][1])[j][1] + ", " +
                                         Object.entries(answers[0][1])[j][1])
