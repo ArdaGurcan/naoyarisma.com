@@ -3,82 +3,85 @@
 
 <head>
 	<title>Yarışma</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9">
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="shortcut icon" href="https://portal.nesibeaydin.com.tr/favicon.ico" type="image/x-icon">
 	<script src="https://code.jquery.com/jquery-3.4.1.js"
 		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 	<script>
-		// Hayırlı Cumalar
-		// Cumaya gitmeti unutmayın!!!
 		console.log("Coded by Arda Gürcan under CC BY 4.0 license")
 		let ad_soyad = ""
+		let exists = false;
 
+		function capitalize(words) {
+			var separateWord = words.toLowerCase().split(' ');
+			for (var i = 0; i < separateWord.length; i++) {
+				separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+					separateWord[i].substring(1);
+			}
+			return separateWord.join(' ');
+		}
+		
+		
+    			
+        
+        
 		function SubForm(form) {
-			if (form == 1 || ad_soyad === "") {
-				ad_soyad = $("#q" + form).serializeArray()[0].value;
-				if (ad_soyad !== "") {
-					$.ajax({
-						url: "https://api.apispreadsheets.com/data/12139/",
-						type: "post",
-						data: {
-							["ad_soyad"]: $("#q" + form).serializeArray()[0].value,
-							["cevap" + form]: ($("#q" + form).serializeArray()[1]) ? $("#q" + form).serializeArray()[
-								1].value.toLowerCase().replace(" ","") : ""
-						},
-						success: function () {
-							console.log("Form Data Submitted :)")
-						},
-						error: function () {
-							console.log("There was an error :(")
-							console.log({
-								["ad_soyad"]: $("#q" + form).serializeArray()[0].value,
-								["cevap" + form]: ($("#q" + form).serializeArray()[1]) ? $("#q" + form)
-									.serializeArray()[1].value.toLowerCase().replace(" ","") : ""
-							})
+			$("#q" + form + " > button").text("Gönderiliyor...")
+
+			if (ad_soyad === "") {
+				ad_soyad = capitalize($("#q" + form).serializeArray()[0].value.toLowerCase());
+
+			}
+			if (ad_soyad !== "") {
+				$.post("send.php", {
+						ad_soyad: ad_soyad,
+						soru: form,
+						cevap: $("#q" + form).serializeArray()[1].value ? $("#q" + form).serializeArray()[1].value.toLowerCase()
+							.replace(" ", "") : "%boş%"
+					},
+					function (data, status) {
+						// alert("Data: " + data + "\nStatus: " + status);
+						if (status == "success") {
+							$("#q" + form + " > button").text("Gönderildi")
+							$("#q" + form + " > button").hover(
+								() => $("#q" + form + " > button").text("Yeniden Gönder"),
+								() => $("#q" + form + " > button").text("Gönderildi")
+							)
+						} else {
+							console.log(status)
+							$("#q" + form + " > button").text("Gönderilemedi")
+							$("#q" + form + " > button").hover(
+								() => $("#q" + form + " > button").text("Yeniden Dene"),
+								() => $("#q" + form + " > button").text("Gönderilemedi")
+							)
 						}
 					});
-				}
-			} else {
-				fetch("https://api.apispreadsheets.com/data/12139/", {
-					method: "POST",
-					body: JSON.stringify({
-						"data": {
-							["cevap" + form]: $("#q" + form).serializeArray()[1] ? $("#q" + form)
-								.serializeArray()[1].value.toLowerCase().replace(" ","") : ""
-						},
-						"query": "select*from12139wheread_soyad='" + ad_soyad + "'"
-					}),
-				}).then(res => {
-					if (res.status === 201) {
-						console.log("Form Data Updated :)")
-					} else {
-						console.log("There was an error :(")
-					}
-				})
-				console.log({
-					"data": {
-						["cevap" + form]: $("#q" + form).serializeArray()[1] ? $("#q" + form).serializeArray()[1]
-							.value.toLowerCase().replace(" ","") : ""
-						// ["aciklama" + form]: $("#q" + form).serializeArray()[1].value
-					},
-					"query": "select*from12139wheread_soyad='" + ad_soyad + "'"
-				})
-			}
 
+			} else {
+				$("#q" + form + " > button").text("Geçersiz İsim")
+				$("#q" + form + " > button").hover(
+					() => $("#q" + form + " > button").text("Yeniden Dene"),
+					() => $("#q" + form + " > button").text("Geçersiz İsim")
+				)
+			}
 		}
 	</script>
 	<script>
-		startDate = new Date("Wed May 19 2021 12:25")
-		let t = 360
-		let a = 120
+		startDate = new Date("June 7 2021 21:53 GMT+03:00")
+		let t = 30
+		let a = 5
+		let now;
+		
 		setInterval(() => {
-			let now = new Date();
-			// console.log(startDate)
-			// console.log(now)
+		    $.get('date.php', function(data) {
+              now = new Date(data);
+            }).then(
+            ()=>{
+
 			let diff = (now.getTime() - startDate.getTime()) / 1000
-			// console.log(diff)
-			// console.log(now.getMonth() + " " + now.getDate() + " " + now.getHours() + " " + now.getMinutes());
 			let forms = $("form")
 			if (diff < 0) {
 
@@ -119,12 +122,17 @@
 				}
 
 			}
+            }
+            )
+			
 		}, 1000);
+		
 	</script>
 	<style>
 		img {
-  pointer-events: none;
-}
+			pointer-events: none;
+		}
+
 		html {
 			position: relative;
 			min-height: 100%;
@@ -169,19 +177,31 @@
 			background-color: #ced4da;
 			border: 0px solid #ced4da;
 			border-radius: 5px;
-			width: 50%;
+			width: 80%;
 		}
 	</style>
 </head>
 
 <body oncontextmenu="return false;">
+    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">              
+          <div class="modal-body">
+          	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <img src="" class="imagepreview" style="width: 100%;" >
+          </div>
+        </div>
+      </div>
+    </div>
 	<div style="text-align: center;">
-		
-		 <h1 style="font-size: 3rem; padding-top: 30px;"><strong><img class="icon" src="https://onkayit.nesibeaydin.k12.tr/img/logo_mesale.png"
-			style="float:none; height: 55px; padding-right: 15px; padding-bottom: 10px;">Nesibe Aydın Okulları Matematik Yarışması<img class="icon" src="https://onkayit.nesibeaydin.k12.tr/img/logo_mesale.png"
-			style="float:none; height: 55px; padding-left: 15px; padding-bottom: 10px;"></strong></h1>
-		 
-		</div>
+
+		<h1 style="font-size: 3rem; padding-top: 30px;"><strong><img class="icon"
+					src="https://onkayit.nesibeaydin.k12.tr/img/logo_mesale.png"
+					style="float:none; height: 55px; padding-right: 15px; padding-bottom: 10px;">Nesibe Aydın Okulları
+				Akıl Oyunları Yarışması<img class="icon" src="https://onkayit.nesibeaydin.k12.tr/img/logo_mesale.png"
+					style="float:none; height: 55px; padding-left: 15px; padding-bottom: 10px;"></strong></h1>
+
+	</div>
 
 	<div class="jumbotron">
 
@@ -207,6 +227,7 @@
 					<label for="cevap1">Cevap</label>
 					<input type="text" name="cevap1" class="form-control" id="cevap1" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(1);return false">Gönder</button>
 				<!-- <div class="form-group">
 					<label for="aciklama1">Açıklamanız</label>
 					<textarea name="aciklama1" class="form-control" id="aciklama1" rows="3"></textarea>
@@ -231,6 +252,8 @@
 					<label for="cevap2">Cevap</label>
 					<input type="text" name="cevap2" class="form-control" id="cevap2" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(2);return false">Gönder</button>
+
 			</form>
 
 			<form id="q3" style="width: 0px; height: 0px; visibility: hidden;">
@@ -253,6 +276,8 @@
 					<label for="cevap3">Cevap</label>
 					<input type="text" name="cevap3" class="form-control" id="cevap3" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(3);return false">Gönder</button>
+
 			</form>
 
 
@@ -276,6 +301,8 @@
 					<label for="cevap4">Cevap</label>
 					<input type="text" name="cevap4" class="form-control" id="cevap4" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(4);return false">Gönder</button>
+
 			</form>
 
 			<form id="q5" style="width: 0px; height: 0px; visibility: hidden;">
@@ -296,6 +323,8 @@
 					<label for="cevap5">Cevap</label>
 					<input type="text" name="cevap5" class="form-control" id="cevap5" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(5);return false">Gönder</button>
+
 			</form>
 
 			<form id="q6" style="width: 0px; height: 0px; visibility: hidden;">
@@ -316,6 +345,8 @@
 					<label for="cevap6">Cevap</label>
 					<input type="text" name="cevap6" class="form-control" id="cevap6" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(6);return false">Gönder</button>
+
 			</form>
 
 			<form id="q7" style="width: 0px; height: 0px; visibility: hidden;">
@@ -336,6 +367,8 @@
 					<label for="cevap7">Cevap</label>
 					<input type="text" name="cevap7" class="form-control" id="cevap7" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(7);return false">Gönder</button>
+
 			</form>
 
 			<form id="q8" style="width: 0px; height: 0px; visibility: hidden;">
@@ -356,6 +389,8 @@
 					<label for="cevap8">Cevap</label>
 					<input type="text" name="cevap8" class="form-control" id="cevap8" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(8);return false">Gönder</button>
+
 			</form>
 
 			<form id="q9" style="width: 0px; height: 0px; visibility: hidden;">
@@ -376,6 +411,8 @@
 					<label for="cevap9">Cevap</label>
 					<input type="text" name="cevap9" class="form-control" id="cevap9" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(9);return false">Gönder</button>
+
 			</form>
 
 			<form id="q10" style="width: 0px; height: 0px; visibility: hidden;">
@@ -396,6 +433,8 @@
 					<label for="cevap10">Cevap</label>
 					<input type="text" name="cevap10" class="form-control" id="cevap10" placeholder="Cevabınız">
 				</div>
+				<button class="btn btn-success" onclick="SubForm(10);return false">Gönder</button>
+
 			</form>
 
 
@@ -405,9 +444,11 @@
 	</div>
 	<footer class="footer">
 		<div class="container">
-			<span class="text-muted"‎>Bu sistem <img class="icon" src="https://www.ardagurcan.com/ico.png"
-				style="position: relative; padding-right: 3px; padding-bottom: 3px; width: 20px; height: 20px;"><a href="https://www.ardagurcan.com" target="_blank" class="text-dark">Arda
-					Gürcan</a> tarafından <a href="https://naoyarisma.com/CC-BY-4.0.txt" target="_blank" class="text-dark">Creative Commons Atıf Lisansı</a> altında kodlanmıştır.</span>
+			<span class="text-muted">Bu sistem <img class="icon" src="https://www.ardagurcan.com/ico.png"
+					style="position: relative; padding-right: 3px; padding-bottom: 3px; width: 20px; height: 20px;"><a
+					href="https://www.ardagurcan.com" target="_blank" class="text-dark">Arda
+					Gürcan</a> tarafından <a href="https://naoyarisma.com/CC-BY-4.0.txt" target="_blank"
+					class="text-dark">Creative Commons Atıf Lisansı</a> altında kodlanmıştır.</span>
 		</div>
 	</footer>
 
@@ -426,10 +467,9 @@
 			<input name="aciklama1" />
 		</div>
 	</form> -->
-<script>
-document.addEventListener('contextmenu', event => event.preventDefault());
-
-</script>
+	<script>
+		document.addEventListener('contextmenu', event => event.preventDefault());
+	</script>
 </body>
 
 </html>
